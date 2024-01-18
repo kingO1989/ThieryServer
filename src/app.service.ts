@@ -75,7 +75,7 @@ export class AppService {
         csv.push(temp);
       }
     } catch (e) {
-      return 'error with file';
+      return e;
     }
 
     //console.log(csvColumns);

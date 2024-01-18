@@ -163,7 +163,7 @@ export class AppService {
       dateRange['max'] = maxdate;
       dateRange['min'] = mindate;
     } catch (e) {
-      return 'error with file';
+      return e;
     }
 
     //console.log(csvColumns);

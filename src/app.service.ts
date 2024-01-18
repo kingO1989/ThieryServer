@@ -118,7 +118,7 @@ export class AppService {
     let dateRange = {};
     let csvColumns = {};
     try {
-      file = await open(__dirname + '\\..\\data\\noise_new.csv');
+      file = await open(__dirname + '/../data/noise_new.csv');
 
       let cntforheader = 0;
 

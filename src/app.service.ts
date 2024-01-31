@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { open } from 'node:fs/promises';
 import { max } from 'rxjs';
+import supabase from './SBClient.js';
 
 type TransitNoiseData = {
   date: Date;
@@ -30,53 +31,54 @@ export class AppService {
     let allHours = [];
     let allDates = [];
     let csvColumns = {};
+
     try {
-      file = await open(__dirname + '/../data/noise_new.csv');
+      const { data, error }: any = await supabase.from('all_decibel').select();
+      if (error) console.log(error);
+      if (data) console.log(data);
 
-      let cntforheader = 0;
-
-      for await (const line of file.readLines()) {
-        if (cntforheader === 0) {
-          let columns = line.split(',');
-          let columnCounter = 0;
-          for await (const column of columns) {
-            csvColumns[column] = columnCounter;
-            columnCounter++;
-          }
-          cntforheader++;
-
-          continue;
-        }
-
-        let datecolumn = csvColumns['date'];
-
-        let linesplit = line.split(',');
-
-        let year = linesplit[datecolumn].substring(0, 4);
-        let month = linesplit[datecolumn].substring(4, 6);
-        let day = linesplit[datecolumn].substring(6, 8);
-        let date = year + '-' + month + '-' + day;
-
-        let temp: TransitNoiseData = {
-          date: new Date(datecolumn), //new Date(date),
-          hour: Number(linesplit[csvColumns['hour']]),
-          db: Number(linesplit[csvColumns['db']]),
-          label: linesplit[csvColumns['label']],
-          score: Number(linesplit[csvColumns['score']]),
-          carNumber: Number(linesplit[csvColumns['car_number']]),
-          mark: Number(linesplit[csvColumns['mark']]),
-          file: linesplit[csvColumns['file']],
-          surveyId: linesplit[csvColumns['survey_id']],
-          timeStamp: linesplit[csvColumns['timestamp']], //new Date(linesplit[csvColumns['timestamp']]),
-        };
-        allDecibels.push(Number(linesplit[csvColumns['db']]));
-        allDates.push(linesplit[csvColumns['timestamp']]);
-        allHours.push(Number(linesplit[csvColumns['hour']]));
-        csv.push(temp);
+      for (const item of data) {
+        allDecibels.push(item.db);
+        allDates.push(item.timestamp);
+        allHours.push(item.hour);
       }
-    } catch (e) {
-      return e;
-    }
+    } catch (e) {}
+
+    //console.log(csvColumns);
+
+    // return csv;
+
+    return {
+      dbs: allDecibels,
+      dates: allDates,
+      hours: allHours,
+    };
+    //return csvColumns;
+  }
+
+  async filterByCarType(car: number): Promise<any> {
+    let file;
+    let csv: Array<TransitNoiseData> = new Array<TransitNoiseData>();
+
+    let allDecibels = [];
+    let allHours = [];
+    let allDates = [];
+    let csvColumns = {};
+
+    try {
+      const { data, error }: any = await supabase
+        .from('all_decibel')
+        .select()
+        .eq('car_number', car);
+      if (error) console.log(error);
+      if (data) console.log(data);
+
+      for (const item of data) {
+        allDecibels.push(item.db);
+        allDates.push(item.timestamp);
+        allHours.push(item.hour);
+      }
+    } catch (e) {}
 
     //console.log(csvColumns);
 
@@ -117,58 +119,25 @@ export class AppService {
     let allDates = [];
     let dateRange = {};
     let csvColumns = {};
+
     try {
-      file = await open(__dirname + '/../data/noise_new.csv');
+      const { data, error }: any = await supabase.from('all_decibel').select();
+      if (error) console.log(error);
+      if (data) console.log(data);
 
-      let cntforheader = 0;
-
-      for await (const line of file.readLines()) {
-        if (cntforheader === 0) {
-          let columns = line.split(',');
-          let columnCounter = 0;
-          for await (const column of columns) {
-            csvColumns[column] = columnCounter;
-            columnCounter++;
-          }
-          cntforheader++;
-
-          continue;
-        }
-
-        let linesplit = line.split(',');
-
-        /* 
-        let temp: TransitNoiseData = {
-          date: new Date(datecolumn), //new Date(date),
-          hour: Number(linesplit[csvColumns['hour']]),
-          db: Number(linesplit[csvColumns['db']]),
-          label: linesplit[csvColumns['label']],
-          score: Number(linesplit[csvColumns['score']]),
-          carNumber: Number(linesplit[csvColumns['car_number']]),
-          mark: Number(linesplit[csvColumns['mark']]),
-          file: linesplit[csvColumns['file']],
-          surveyId: linesplit[csvColumns['survey_id']],
-          timeStamp: linesplit[csvColumns['timestamp']], //new Date(linesplit[csvColumns['timestamp']]),
-        }; */
-
-        let tempdate = new Date(linesplit[csvColumns['timestamp']]);
+      for (const item of data) {
+        let tempdate = new Date(item.timestamp);
 
         if (tempdate < maxdate && tempdate > mindate) {
-          allDecibels.push(Number(linesplit[csvColumns['db']]));
-          allDates.push(linesplit[csvColumns['timestamp']]);
-          allHours.push(Number(linesplit[csvColumns['hour']]));
+          allDecibels.push(item.db);
+          allDates.push(item.timestamp);
+          allHours.push(item.hour);
         }
       }
 
       dateRange['max'] = maxdate;
       dateRange['min'] = mindate;
-    } catch (e) {
-      return e;
-    }
-
-    //console.log(csvColumns);
-
-    // return csv;
+    } catch (e) {}
 
     return {
       dbs: allDecibels,

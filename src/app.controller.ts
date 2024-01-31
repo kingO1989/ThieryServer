@@ -16,4 +16,11 @@ export class AppController {
     console.log(query);
     return await this.appService.filterbyDateRange(query.selecteddate);
   }
+
+  @Get('filterbyCar')
+  async filterbyCar(@Query() query: any): Promise<any> {
+    console.log(query);
+    if (query.car === 'all') return await this.appService.getAllData();
+    else return await this.appService.filterByCarType(query.car);
+  }
 }

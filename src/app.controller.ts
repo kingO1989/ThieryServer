@@ -10,6 +10,10 @@ export class AppController {
   async getAllData(): Promise<any> {
     return await this.appService.getAllData();
   }
+  @Get('mod')
+  async getAllDatamod(): Promise<any> {
+    return await this.appService.getAllDataMod();
+  }
 
   @Get('filterbydate')
   async flterByDate(@Query() query: any): Promise<any> {
@@ -19,7 +23,7 @@ export class AppController {
 
   @Get('filterbyCar')
   async filterbyCar(@Query() query: any): Promise<any> {
-    console.log(query);
+    // console.log(query);
     if (query.car === 'all') return await this.appService.getAllData();
     else return await this.appService.filterByCarType(query.car);
   }

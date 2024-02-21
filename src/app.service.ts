@@ -36,16 +36,18 @@ export class AppService {
       const { data, error }: any = await supabase
         .from('all_decibelv2')
         .select();
-      if (error)
-        if (data)
-          // console.log(error);
-          //console.log(data);
+      if (error) {
+        // console.log(error);
+      }
+      if (data) {
+        //console.log(data);
+      }
 
-          for (const item of data) {
-            allDecibels.push(item.db);
-            allDates.push(item.timestamp);
-            allHours.push(item.hour);
-          }
+      for (const item of data) {
+        allDecibels.push(item.db);
+        allDates.push(item.timestamp);
+        allHours.push(item.hour);
+      }
     } catch (e) {}
 
     let testarr = [];
@@ -353,16 +355,18 @@ export class AppService {
         .from('all_decibelv2')
         .select()
         .eq('car_number', car);
-      if (error)
-        if (data)
-          //console.log(error);
-          //console.log(data);
+      if (error) {
+        //console.log(error);
+      }
+      if (data) {
+        //console.log(data);
+      }
 
-          for (const item of data) {
-            allDecibels.push(item.db);
-            allDates.push(item.timestamp);
-            allHours.push(item.hour);
-          }
+      for (const item of data) {
+        allDecibels.push(item.db);
+        allDates.push(item.timestamp);
+        allHours.push(item.hour);
+      }
     } catch (e) {}
 
     //console.log(csvColumns);
@@ -436,20 +440,22 @@ export class AppService {
       const { data, error }: any = await supabase
         .from('all_decibelv2')
         .select();
-      if (error)
-        if (data)
-          //console.log(error);
-          //console.log(data);
+      if (error) {
+        //console.log(error);
+      }
+      if (data) {
+        //console.log(data);
+      }
 
-          for (const item of data) {
-            let tempdate = new Date(item.timestamp);
+      for (const item of data) {
+        let tempdate = new Date(item.timestamp);
 
-            if (tempdate < maxdate && tempdate > mindate) {
-              allDecibels.push(item.db);
-              allDates.push(item.timestamp);
-              allHours.push(item.hourminute);
-            }
-          }
+        if (tempdate < maxdate && tempdate > mindate) {
+          allDecibels.push(item.db);
+          allDates.push(item.timestamp);
+          allHours.push(item.hourminute);
+        }
+      }
 
       dateRange['max'] = maxdate;
       dateRange['min'] = mindate;

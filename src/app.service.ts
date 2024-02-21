@@ -36,14 +36,16 @@ export class AppService {
       const { data, error }: any = await supabase
         .from('all_decibelv2')
         .select();
-      if (error) console.log(error);
-      if (data) console.log(data);
+      if (error)
+        if (data)
+          // console.log(error);
+          //console.log(data);
 
-      for (const item of data) {
-        allDecibels.push(item.db);
-        allDates.push(item.timestamp);
-        allHours.push(item.hour);
-      }
+          for (const item of data) {
+            allDecibels.push(item.db);
+            allDates.push(item.timestamp);
+            allHours.push(item.hour);
+          }
     } catch (e) {}
 
     let testarr = [];
@@ -51,10 +53,10 @@ export class AppService {
     let testcnt = 0;
 
     let minhour = Math.min(...allHours);
-    console.log(minhour);
+    // console.log(minhour);
 
     let maxhour = Math.max(...allHours);
-    console.log(maxhour);
+    // console.log(maxhour);
     let hoursfromMax = [];
     while (minhour <= maxhour) {
       let overallcnt = -1;
@@ -120,14 +122,16 @@ export class AppService {
       const { data, error }: any = await supabase
         .from('all_decibelv2')
         .select();
-      if (error) console.log(error);
-      if (data) console.log(data);
+      if (error)
+        if (data)
+          //console.log(error);
+          //console.log(data);
 
-      for (const item of data) {
-        allDecibels.push(item.db);
-        allDates.push(item.timestamp);
-        allHours.push(item.hour);
-      }
+          for (const item of data) {
+            allDecibels.push(item.db);
+            allDates.push(item.timestamp);
+            allHours.push(item.hour);
+          }
     } catch (e) {}
 
     /* if (allHours[overallcnt] < 1.1 && allHours[overallcnt] > 0.09) {
@@ -304,10 +308,10 @@ export class AppService {
     let testcnt = 0;
 
     let minhour = Math.min(...allHours);
-    console.log(minhour);
+    // console.log(minhour);
 
     let maxhour = Math.max(...allHours);
-    console.log(maxhour);
+    // console.log(maxhour);
     let hoursfromMax = [];
     while (minhour <= maxhour) {
       let overallcnt = -1;
@@ -349,14 +353,16 @@ export class AppService {
         .from('all_decibelv2')
         .select()
         .eq('car_number', car);
-      if (error) console.log(error);
-      if (data) console.log(data);
+      if (error)
+        if (data)
+          //console.log(error);
+          //console.log(data);
 
-      for (const item of data) {
-        allDecibels.push(item.db);
-        allDates.push(item.timestamp);
-        allHours.push(item.hour);
-      }
+          for (const item of data) {
+            allDecibels.push(item.db);
+            allDates.push(item.timestamp);
+            allHours.push(item.hour);
+          }
     } catch (e) {}
 
     //console.log(csvColumns);
@@ -367,10 +373,10 @@ export class AppService {
     let testcnt = 0;
 
     let minhour = Math.min(...allHours);
-    console.log(minhour);
+    //  console.log(minhour);
 
     let maxhour = Math.max(...allHours);
-    console.log(maxhour);
+    //console.log(maxhour);
     let hoursfromMax = [];
     while (minhour <= maxhour) {
       let overallcnt = -1;
@@ -409,16 +415,16 @@ export class AppService {
       timeZone: 'PST',
     });
     let tempDate = new Date(tempstring);
-    console.log(tempDate);
+    //console.log(tempDate);
     let maxdate: any = dateclicked.setHours(dateclicked.getHours() + 1);
 
     maxdate = new Date(maxdate);
     let mindate: any = dateclicked2.setHours(dateclicked2.getHours() - 6);
     mindate = new Date(mindate);
-    console.log(dateclicked);
-    console.log(dateclicked2);
-    console.log(maxdate);
-    console.log(mindate);
+    // console.log(dateclicked);
+    //console.log(dateclicked2);
+    //console.log(maxdate);
+    //console.log(mindate);
 
     let allDecibels = [];
     let allHours = [];
@@ -430,18 +436,20 @@ export class AppService {
       const { data, error }: any = await supabase
         .from('all_decibelv2')
         .select();
-      if (error) console.log(error);
-      if (data) console.log(data);
+      if (error)
+        if (data)
+          //console.log(error);
+          //console.log(data);
 
-      for (const item of data) {
-        let tempdate = new Date(item.timestamp);
+          for (const item of data) {
+            let tempdate = new Date(item.timestamp);
 
-        if (tempdate < maxdate && tempdate > mindate) {
-          allDecibels.push(item.db);
-          allDates.push(item.timestamp);
-          allHours.push(item.hourminute);
-        }
-      }
+            if (tempdate < maxdate && tempdate > mindate) {
+              allDecibels.push(item.db);
+              allDates.push(item.timestamp);
+              allHours.push(item.hourminute);
+            }
+          }
 
       dateRange['max'] = maxdate;
       dateRange['min'] = mindate;
